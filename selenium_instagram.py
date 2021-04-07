@@ -48,7 +48,7 @@ def driverStart(instagramId):
 
     driver = webdriver.Chrome('chromedriver.exe')
     # 웹페이지 안보이게 하기
-    # driver = webdriver.PhantomJS('phantomjs.exe')
+    driver = webdriver.PhantomJS('phantomjs.exe')
     driver.get(url)
     driver.implicitly_wait(3)
 
@@ -171,7 +171,7 @@ def SeleniumInstagramCrawler(id):
 
     driverOption()
     driver = driverStart(id)
-    reallink = scrollInstagram(driver)
+    reallink = scrollInstagram(driver);
 
     print(reallink)
     getHashtags(driver, reallink, id)
@@ -302,31 +302,4 @@ def SeleniumInstagramCrawlerAll(id):
 
 if __name__ == '__main__':
     id = input("Instagram ID : ")
-    SeleniumInstagramCrawler(id)
-
-'''
-import unittest
-
-class SeleniumInstagram(unittest.TestCase):
-    def setUp(self):
-        self.driver = webdriver.Chrome('chromedriver.exe')
-        # 웹페이지 안보이게 하기
-        # self.driver = webdriver.PhantomJS('phantomjs.exe')
-        self.driver.implicitly_wait(3)
-
-    def tearDown(self):
-        self.driver.quit()
-
-    def test_can_start_a_list_and_retrieve_it_later(self):
-        self.driver.get('http://localhost:8000')
-
-        self.assertIn('To-Do', self.driver.title)
-        self.fail('Finished the Test')
-
-
-
-
-
-if __name__ == '__main__':
-    unittest.main(warning='ignore')
-'''
+    SeleniumInstagramCrawlerAll(id)
