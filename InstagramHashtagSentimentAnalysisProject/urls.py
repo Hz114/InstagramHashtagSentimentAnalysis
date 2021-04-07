@@ -20,4 +20,6 @@ from InstagramHashtagSentimentAnalysisApp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.main, name='main'),
+    path('result/', views.result, name='result'),
+
 ]
