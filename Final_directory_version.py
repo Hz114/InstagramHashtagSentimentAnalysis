@@ -16,7 +16,6 @@ for line in rdr:
     if line[0].isdigit(): # 첫 번째 인수의 값이 숫자면
         new_string = ''.join(filter(str.isalnum, line[-1])) # 특수문자 제거
         tags.append(new_string)
-print(tags)
     # 한 줄 읽고, 0번이 숫자면 해당 리스트의 마지막 내용을 읽어온다.
 
 # 파일 읽어오기
