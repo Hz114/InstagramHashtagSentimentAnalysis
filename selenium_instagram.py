@@ -11,13 +11,13 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 
 pathlink = "./InstagramHashtagSentimentAnalysisProject/csv_and_hash/csv/"
-config = configparser.ConfigParser()
 
 def checkCsv(search):
     if os.path.exists(pathlink + search + ".csv"):
         os.remove(pathlink + search + ".csv")
 
 def saveCsv(data, search):
+    config = configparser.ConfigParser()
     # CSV파일 생성
     if len(glob.glob(pathlink + search + ".csv")) == 1:
         cnt = len(pd.read_csv(pathlink + search + ".csv", index_col=0).index)
@@ -62,17 +62,15 @@ def scrollInstagram(driver):
 
         # 게시물 정보
         for link1 in bs.find_all(name="div", attrs={"class": "Nnq7C weEfm"}):
-            title = link1.select('a')[0]
-            real = title.attrs['href']
-            reallink.append(real)
+            for i in range(0, 3):
+                try:
+                    title = link1.select('a')[i]
+                    real = title.attrs['href']
+                    reallink.append(real)
+                except:
+                    print("탈출")
+                    pass
 
-            title = link1.select('a')[1]
-            real = title.attrs['href']
-            reallink.append(real)
-
-            title = link1.select('a')[2]
-            real = title.attrs['href']
-            reallink.append(real)
 
         # 페이지 스크롤
         last_height = driver.execute_script("return document.body.scrollHeight")
@@ -81,23 +79,16 @@ def scrollInstagram(driver):
 
         # ++ 게시물 더보기 버튼 클릭
         # 한번 클릭하면 다시 안눌러도 된다
-        try:
-            driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div[2]/div[1]/div/button").click()
-            print("클릭하자 2")
-        except:
-            print("더보기버튼 없음 2")
+        for i in range(0, 5):
+            i_str = str(i)
 
-        try:
-            driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div[3]/div[1]/div/button").click()
-            print("클릭하자3")
-        except:
-            print("더보기버튼 없음 3")
+            xpath = "/html/body/div[1]/section/main/div/div[" + i_str + "]/div[1]/div/button"
 
-        try:
-            driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div[4]/div[1]/div/button").click()
-            print("클릭하자4")
-        except:
-            print("더보기버튼 없음 4")
+            try:
+                driver.find_element_by_xpath(xpath).click()
+                print("클릭하자" + i_str)
+            except:
+                print("더보기버튼 없음" + i_str)
 
         if new_height == last_height:
             driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
