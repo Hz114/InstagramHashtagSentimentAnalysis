@@ -2,7 +2,6 @@
 import os
 import json
 import glob
-import time
 import configparser
 import urllib.parse
 from urllib.request import Request, urlopen
