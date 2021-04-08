@@ -4,7 +4,7 @@ import csv
 
 # CSV 파일 read
 def openCsv(id):
-    path = "./InstagramHashtagSentimentAnalysisProject/csv_and_hash/csv/" + id + ".csv"
+    path = "./InstagramHashtagSentimentAnalysisProject/data/csv/" + id + ".csv"
     f = open(path,"r",encoding='utf-8')
     rdr = csv.reader(f)
     tags = []
@@ -17,8 +17,8 @@ def openCsv(id):
     return tags
 
 def hashtag():
-    path_hash_utf8 = "./InstagramHashtagSentimentAnalysisProject/csv_and_hash/hash/utf-8"
-    path_hash_cp949 = "./InstagramHashtagSentimentAnalysisProject/csv_and_hash/hash/cp949"
+    path_hash_utf8 = "./InstagramHashtagSentimentAnalysisProject/data/hash/utf-8"
+    path_hash_cp949 = "./InstagramHashtagSentimentAnalysisProject/data/hash/cp949"
 
     # 파일 읽어오기
     file_list = os.listdir(path_hash_utf8)
@@ -81,8 +81,11 @@ def hashtagChecker(id):
 
     dic = {name: value for name, value in zip(file_order, light_on)}
 
+
+    print("해시태그체크------------------------------------------------------------------")
+    print(tags)
     print(dic)
-    return dic
+    return dic, tags
 
 if __name__ == '__main__':
     id = "jjoo_won_e"
