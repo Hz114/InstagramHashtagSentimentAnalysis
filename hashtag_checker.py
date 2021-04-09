@@ -1,4 +1,4 @@
-import pandas as pd
+
 import os
 import csv
 
@@ -73,6 +73,28 @@ def comparison(tags, Middle, file_order):
             #--- '비' tag도 육아에 잡힘.
     return  light_on
 
+def hashtagTop3(dic):
+    sortDic = sorted(dic.items(), key=lambda x: x[1], reverse=True)
+    sortDic = sortDic[:3]
+
+    print(sortDic)
+    result = []
+    for key, value in sortDic:
+        if value != 0:
+            if key == 'eng':
+                result.append('외국인')
+            else:
+                result.append(key[1:-4])
+
+    while len(result) != 3:
+        if '감정' not in result:
+            result.append('감정')
+        elif '일상' not in result:
+            result.append('일상')
+        elif '취미' not in result:
+            result.append('취미')
+    return result
+
 def hashtagChecker(id):
     id = str(id)
     tags = openCsv(id)
@@ -80,14 +102,13 @@ def hashtagChecker(id):
     light_on = comparison(tags, Middle, file_order)
 
     dic = {name: value for name, value in zip(file_order, light_on)}
+    top3 = hashtagTop3(dic)
 
+    print(top3)
 
-    print("해시태그체크------------------------------------------------------------------")
-    print(tags)
-    print(dic)
-    return dic, tags
+    return top3, tags
 
 if __name__ == '__main__':
-    id = "jjoo_won_e"
+    id = "jjunlovee"
     hashtagChecker(id)
 
