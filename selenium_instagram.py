@@ -2,6 +2,7 @@
 import os
 import json
 import glob
+import time
 import configparser
 import urllib.parse
 from urllib.request import Request, urlopen
@@ -9,8 +10,41 @@ import pandas as pd
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
+import time
 
-pathlink = "./InstagramHashtagSentimentAnalysisProject/data/csv/"
+
+pathlink = "./InstagramHashtagSentimentAnalysisApp/data/csv/"
+
+def driverOption():
+    option = webdriver.ChromeOptions()
+
+    option.add_argument('headless')  # headless 모드 설정
+    option.add_argument("disable-gpu")  # 가속 사용안한다
+    option.add_argument("lang=ko_KR")  # 가짜 플러그인 탑재
+    option.add_argument('user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36')  # user-agent 이름 설정
+
+    prefs = {'profile.default_content_setting_values': {'cookies': 2, 'images': 2, 'plugins': 2, 'popups': 2,
+                                                        'geolocation': 2, 'notifications': 2,
+                                                        'auto_select_certificate': 2, 'fullscreen': 2, 'mouselock': 2,
+                                                        'mixed_script': 2, 'media_stream': 2, 'media_stream_mic': 2,
+                                                        'media_stream_camera': 2, 'protocol_handlers': 2,
+                                                        'ppapi_broker': 2, 'automatic_downloads': 2, 'midi_sysex': 2,
+                                                        'push_messaging': 2, 'ssl_cert_decisions': 2,
+                                                        'metro_switch_to_desktop': 2, 'protected_media_identifier': 2,
+                                                        'app_banner': 2, 'site_engagement': 2, 'durable_storage': 2}}
+    option.add_experimental_option('prefs', prefs)
+
+def driverStart():
+    driver = webdriver.Chrome('./InstagramHashtagSentimentAnalysisApp/data/exe/chromedriver.exe')
+    # 웹페이지 안보이게 하기
+    # driver = webdriver.PhantomJS('phantomjs.exe')
+    driver.maximize_window()
+
+    return driver
+
+def driverEnd(driver):
+    driver.quit()
+
 
 def checkCsv(search):
     if os.path.exists(pathlink + search + ".csv"):
@@ -28,25 +62,8 @@ def saveCsv(data, search):
         time_pd = pd.DataFrame(data, index=[cnt])
         time_pd.to_csv(pathlink + search + ".csv", mode='a', encoding='utf-8-sig')
 
-def driverOption():
-    option = webdriver.ChromeOptions()
-
-    option.add_argument("disable-gpu")  # 가속 사용안한다
-    option.add_argument("lang=ko_KR")  # 가짜 플러그인 탑재
-    option.add_argument('user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36')  # user-agent 이름 설정
-
-def driverStart():
-    driver = webdriver.Chrome('chromedriver.exe')
-    # 웹페이지 안보이게 하기
-    # driver = webdriver.PhantomJS('phantomjs.exe')
-
-    return driver
-
-def driverEnd(driver):
-    driver.quit()
-
 def instagramLogin(driver):
-    with open("instagramId.json",'r', encoding="utf8") as f:
+    with open("secrets.json",'r', encoding="utf8") as f:
         data = json.loads(f.read())  # string 타입
     driver.implicitly_wait(3)
 
@@ -57,6 +74,7 @@ def instagramLogin(driver):
     element_id.send_keys(username)
     element_password = driver.find_element_by_name('password')
     element_password.send_keys(password)
+
 
     driver.implicitly_wait(1)
 
@@ -111,18 +129,17 @@ def scrollInstagram(driver, instagramId):
         # 한번 클릭하면 다시 안눌러도 된다
         i = 1
         while flag:
-            driver.implicitly_wait(1)
             i_str = str(i)
             xpath = "/html/body/div[1]/section/main/div/div[" + i_str + "]/div[1]/div/button"
             i = i+1
             try:
                 driver.find_element_by_xpath(xpath).click()
-                print("클릭하자" + i_str)
+                # print("클릭하자" + i_str)
                 flag = False
             except:
                 if i == 5:
                     flag = False
-                print("더보기버튼 없음" + i_str)
+                # print("더보기버튼 없음" + i_str)
 
         if new_height == last_height:
             driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
@@ -205,4 +222,11 @@ def SeleniumInstagramCrawler(id):
 
 if __name__ == '__main__':
     id = input("Instagram ID : ")
+
+    print("m) Driver Option Setting")
+    start_time = time.time()
+
     SeleniumInstagramCrawler(id)
+
+    print("m) Time")
+    print(time.time() - start_time)

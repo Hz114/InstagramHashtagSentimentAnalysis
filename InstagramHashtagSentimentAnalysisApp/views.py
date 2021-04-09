@@ -15,18 +15,21 @@ import moduled_model as MM
 def main(request):
     return render(request, 'main.html')
 
+
+def result(request):
+    return render(request, 'result.html')
+'''
+
 def result(request):
     instagram_id = request.GET['instagramID']
     SI.SeleniumInstagramCrawler(instagram_id)
     dic, tags = HC.hashtagChecker(instagram_id)
 
-    print("view------------------------------------------------------------------")
-    print(tags)
+    model_result = 0
+    for tag in tags:
+        result = MM.sentimentPredict(tag)
+        model_result += result
+    # result = MM.sentimentPredict(tags)
 
-    result = MM.sentimentPredict(tags)
-
-    print(result)
-
-    return render(request, 'result.html', {'instagramId':instagram_id, 'dic':dic})
-    #return render(request, 'result.html')
-
+    return render(request, 'result.html', {'instagramId':instagram_id, 'dic':dic, 'modelResult':model_result})
+'''

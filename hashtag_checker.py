@@ -4,7 +4,7 @@ import csv
 
 # CSV 파일 read
 def openCsv(id):
-    path = "./InstagramHashtagSentimentAnalysisProject/data/csv/" + id + ".csv"
+    path = "./InstagramHashtagSentimentAnalysisApp/data/csv/" + id + ".csv"
     f = open(path,"r",encoding='utf-8')
     rdr = csv.reader(f)
     tags = []
@@ -17,8 +17,8 @@ def openCsv(id):
     return tags
 
 def hashtag():
-    path_hash_utf8 = "./InstagramHashtagSentimentAnalysisProject/data/hash/utf-8"
-    path_hash_cp949 = "./InstagramHashtagSentimentAnalysisProject/data/hash/cp949"
+    path_hash_utf8 = "./InstagramHashtagSentimentAnalysisApp/data/hash/utf-8"
+    path_hash_cp949 = "./InstagramHashtagSentimentAnalysisApp/data/hash/cp949"
 
     # 파일 읽어오기
     file_list = os.listdir(path_hash_utf8)
