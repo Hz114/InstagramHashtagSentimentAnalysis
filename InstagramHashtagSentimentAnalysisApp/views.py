@@ -5,6 +5,7 @@ sys.path.append(os.path.dirname(__file__))
 import selenium_instagram as SI
 import hashtag_checker as HC
 import moduled_model as MM
+import result_message as RM
 
 # Create your views here.
 def main(request):
@@ -22,5 +23,13 @@ def result(request):
 
     result_emo = MM.startModel(tags)
 
-    return render(request, 'result.html', {'instagramId':instagram_id, 'top1Tag':top3[0],'top2Tag':top3[1],'top3Tag':top3[2], 'resultEmo':result_emo})
+    meaasge_1 = RM.getHashtagMessage(top3[0])
+    meaasge_2 = RM.getHashtagMessage(top3[1])
+    meaasge_3 = RM.getHashtagMessage(top3[2])
+
+    meaasge_4 = RM.getSentimentMessage(result_emo)
+
+    return render(request, 'result.html', {'instagramId':instagram_id, 'top1Tag':top3[0],'top2Tag':top3[1],'top3Tag':top3[2],
+                                           'meaasge1': meaasge_1, 'meaasge2': meaasge_2, 'meaasge3': meaasge_3,
+                                           'resultEmo':result_emo, 'message4': meaasge_4})
 

@@ -5,7 +5,7 @@
 >가상환경 실행하기  
 >*Django개발은 반드시 가상환경을 키고 시작*  
 `source myvenv/Scripts/activate`
-
+>
 >가상환경 끄기  
 `deactivate`
 

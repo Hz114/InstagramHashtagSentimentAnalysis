@@ -95,7 +95,7 @@ def searchInstagram(driver, instagramId):
     driver.implicitly_wait(1.5)
 
 def scrollInstagram(driver, instagramId):
-    SCROLL_PAUSE_TIME = 1.0  # 인스타게시물 스크롤 속도 조절 ( 1.0 ~ 2.0까지 사양에 맞게 조절 )
+    SCROLL_PAUSE_TIME = 1.5  # 인스타게시물 스크롤 속도 조절 ( 1.0 ~ 2.0까지 사양에 맞게 조절 )
     reallink = []
 
     flag = True;
@@ -124,7 +124,7 @@ def scrollInstagram(driver, instagramId):
         last_height = driver.execute_script("return document.body.scrollHeight")
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         new_height = driver.execute_script("return document.body.scrollHeight")
-
+        driver.implicitly_wait(SCROLL_PAUSE_TIME)
         # ++ 게시물 더보기 버튼 클릭
         # 한번 클릭하면 다시 안눌러도 된다
         i = 1
